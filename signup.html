@@ -146,14 +146,13 @@
         <button id="sign-up-button">Sign Up</button>
         <p id="error-message"></p>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/pouchdb@7.2.2/dist/pouchdb.min.js"></script>
-    <script>
-        var db = new PouchDB('https://strongdog.mooo.com/chat', {
-            auth: {
-                username: 'Admin', // Use your CouchDB username
-                password: 'jtPettit9'  // Use your CouchDB password
-            }
+<script src="https://cdn.jsdelivr.net/npm/pouchdb@7.2.2/dist/pouchdb.min.js"></script>
+<script>
+    var db = new PouchDB('https://strongdog.mooo.com/chat', {
+        auth: {
+            username: 'Admin', // Replace with actual username
+            password: 'jtPettit9'  // Replace with actual password
+        }
     });
 
     document.getElementById('sign-up-button').addEventListener('click', signUp);
@@ -203,6 +202,7 @@
         }
     });
 </script>
+
     </script>
 </body>
 </html>
