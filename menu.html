@@ -2717,31 +2717,58 @@ h2 {
 
 </script>
 <script>
-            function fetchTopGames() {
-                fetch('https://script.google.com/macros/s/AKfycbwWFyTbHl4mSwaxmvis8WOMk3_jpojGb8CN8KG1EgBHLNuJuNt70v_WWbWP32nCt2Q_aQ/exec?action=getTop10', {
-                    method: 'GET'
-                })
-                .then(response => response.json())
-                .then(data => displayTopGames(data))
-                .catch(error => console.error('Error:', error));
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        var fullscreenButton = document.getElementById('fullscreenButton');
+        var gameContainer = document.getElementById('gameContainer');
+        var gameTitle = document.getElementById('gameTitle');
 
-            function displayTopGames(games) {
-                const topGameList = document.getElementById('topGameList');
-                topGameList.innerHTML = ''; // Clear the list before adding new items
+        function embedGame(gamePath, title) {
+            var iframe = document.createElement('iframe');
+            iframe.src = gamePath;
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.border = 'none';
+            gameContainer.innerHTML = '';
+            gameContainer.appendChild(iframe);
+            gameTitle.textContent = title;
+            updateViewCount(title); // Update the view count when a game is embedded
+        }
 
-                games.forEach(game => {
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'game-card';
-                    gameCard.innerHTML = `<h3>${game[0]}</h3><p>Views: ${game[1]}</p>`;
-                    gameCard.addEventListener('click', function() {
-                        embedGame(`./html/${game[0]}/index.html`, game[0]);
-                    });
-                    topGameList.appendChild(gameCard);
+        function updateViewCount(title) {
+            fetch('https://script.google.com/macros/s/AKfycbwWFyTbHl4mSwaxmvis8WOMk3_jpojGb8CN8KG1EgBHLNuJuNt70v_WWbWP32nCt2Q_aQ/exec?title=' + encodeURIComponent(title), {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function fetchTopGames() {
+            fetch('https://script.google.com/macros/s/AKfycbwWFyTbHl4mSwaxmvis8WOMk3_jpojGb8CN8KG1EgBHLNuJuNt70v_WWbWP32nCt2Q_aQ/exec?action=getTop10', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => displayTopGames(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function displayTopGames(games) {
+            const topGameList = document.getElementById('topGameList');
+            topGameList.innerHTML = ''; // Clear the list before adding new items
+
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `<h3>${game[0]}</h3><p>Views: ${game[1]}</p>`;
+                gameCard.addEventListener('click', function() {
+                    embedGame(`./html/${game[0]}/index.html`, game[0]);
                 });
-            }
+                topGameList.appendChild(gameCard);
+            });
+        }
 
-            fetchTopGames(); // Fetch and display top games when the page loads
-        });
-    </script>
+        fetchTopGames(); // Fetch and display top games when the page loads
+    });
+</script>
+
 </html>
