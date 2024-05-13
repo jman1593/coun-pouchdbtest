@@ -250,6 +250,17 @@ const firebaseConfig = {
     // JavaScript code here
 });
 </script>
+<script>
+    window.onload = function() {
+    const title = document.getElementById('gameTitle').textContent;
+
+  fetch('https://script.google.com/macros/s/AKfycbzUA0R6BY8C_FE8eyMvW2nVn5X_XWpVgSbHivfvFdDPZCKrLXbROxdLO1tOzd9WYg2iyA/exec?title=' + encodeURIComponent(title), {
+    method: 'GET'
+  })
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.error('Error:', error));
+};
 
 </script>
     </body>
