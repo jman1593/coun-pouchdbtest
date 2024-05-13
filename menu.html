@@ -8,118 +8,292 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 <title>StrongDog XP</title> 
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #2e2e2e;
-            color: white;
-        }
+<style>
+    body { 
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #2e2e2e; /* Dark grey background */
+    }
+    .navbar {
+        background-color: #333;
+        color: white; 
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-        .header {
-            background-color: #333;
-            padding: 10px 20px;
-            text-align: left;
-        }
+	.categories {
+		display: flex;
+		gap: 20px; /* Spacing between categories */
+	}
 
-        .header a {
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-        }
+.categories a:hover {
+    background-color: #565656; /* Light gray background on hover */
+    transform: scale(1.05); /* Slight increase in size */
+}
 
-        .categories {
-            background-color: #444;
-            text-align: center;
-            padding: 10px 0;
-        }
+.categories a {
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding: 5px 10px; /* Padding for touch area */
+    border-radius: 5px; /* Rounded corners */
+}
 
-        .categories a {
-            margin: 0 10px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
+    .navbar .logo {
+        color: white;
+        font-weight: bold;
+    }
+    .navbar .logo .xp {
+        color: orange;
+    }
+    .navbar a, .navbar a:visited, .navbar .logo span {
+        text-decoration: none;
+        margin-right: 20px;
+    }
+    .search-bar {
+        padding: 7px;
+        padding-top: 10px;
+        font-size: 1em;
+        border-radius: 20%;
+	width: 100%;
+        border: none;
+        border-bottom: 5px solid gray;
+        background-color: transparent;
+        color: white;
+    }
+    .search-bar:focus {
+        outline: none;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .games-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        padding: 10px;
+		justify-content: center;
+    }
+    .card {
+        background-color: #fff;
+    border-radius: 10px;
+    margin: 5px; /* Reduced margin */
+    width: 120px;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: relative;
+		overflow: hidden;
+        position: relative;
+    }
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.29);
+    }
+    .card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .card:hover img {
+        transform: scale(1.02); /* subtle zoom on the image */
+    }
+    .card figcaption {
+        position: absolute;
+        bottom: -30px; /* start hidden */
+        left: 0;
+        width: 100%;
+        background-color: rgb(74, 74, 74);
+        color: white;
+        text-align: center;
+        padding: 5px;
+        transition: bottom 0.5s ease; /* smoother and slower */
+        overflow: hidden;
+    }
+    .card:hover figcaption {
+        bottom: 0; /* slide up on hover */
+    }
+	.card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+    transform: rotate(30deg) translate(-50%, -50%);
+    transition: transform 0.5s, opacity 0.5s;
+    opacity: 0;
+    pointer-events: none; /* This ensures the shine doesn't interfere with clicking the card */
+}
 
-        .game-container {
-            width: 80%;
-            height: 650px;
-            margin: 20px auto;
-            background-color: #555;
-            position: relative;
-            overflow: hidden;
-        }
+.card:hover::before {
+    transform: rotate(30deg) translate(100%, -50%);
+    opacity: 1;
+}
 
-        .game-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
+.search-results {
+	position: absolute;
+        right: 20px;
+        top: 60px;
+        background-color: white;
+        color: black;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 250px; /* Adjusted for image display */
+        display: none;
+        z-index: 1000;
+        transform-origin: left; /* Anchor the transformation to the left */
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        border-radius: 5px; /* Rounded corners for the search results box */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
 
-        .game-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #444;
-            border-radius: 15px;
-            padding: 10px;
-            margin: 0 auto;
-            width: 80%;
-        }
+.search-results a {
+	display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: black;
+        border-bottom: 1px solid #eee;
+        padding: 5px;
+        transition: all 0.3s ease;
+}
 
-        .fullscreen-button {
-            padding: 5px 10px;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+.search-results img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
 
-        .content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-        }
+.search-results a:last-child {
+    border-bottom: none;
+}
 
-        .ad {
-            width: 120px;
-            height: 300px;
-            background-color: #333;
-            margin: 0 10px;
-        }
+.news-container {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #444; /* Slightly darker background */
+    color: white;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 8px 10px rgba(0,0,0,0.3); /* Subtle shadow */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.news {
+    display: grid;
+    grid-template: repeat(4, 1fr) / 2fr 3fr;
+    gap: 4px;
+}
 
-        .top-games {
-            background-color: #333;
-            padding: 20px;
-            margin: 20px auto;
-            width: 80%;
-        }
+.news > div {
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 7px 15px;
+    background-color: rgba(255, 255, 255, 0.07); /* Slightly lighter */
+}
 
-        .top-games h2 {
-            text-align: center;
-        }
+.credits--right:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2); /* Lighter color on hover */
+    transform: scale(1.1); /* slightly bigger on hover */
+}
 
-        .top-game-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
+.credits--right {
+    transition: all 0.3s ease;
+}
 
-        .game-card {
-            background-color: #444;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 10px;
-            width: 150px;
-            text-align: center;
-            cursor: pointer;
-        }
+.credits--a {
+    color: #b482ff;
+}
 
-        .favorite-icon {
-            cursor: pointer;
-        }
+.credits--title {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+/* Styling for the All  label */
+h2 {
+    text-align: center;
+    color: white;
+    margin: 20px 0; /* Spacing above and below */
+    font-size: 1.5em; /* Larger font size */
+}
+
+.card figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(95,95,95,0.8);
+    color: black;
+    padding: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(100%); /* Start off-screen */
+    opacity: 0;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 0 0 2px white;
+    font-weight: 550;
+    border-radius: 10px;
+}
+
+.card:hover figcaption {
+    height: 30px; /* Show text on hover */
+    background-color: rgba(95, 95, 95, 0.8); /* Non-transparent background on hover */
+	transform: translateY(0); /* Slide up to visible */
+    opacity: 1;
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+    background-color: #2e2e2e; /* Dark grey background, same as body */
+}
+
+.pagination a {
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #444; /* Slightly lighter border for visibility */
+    margin: 0 4px;
+}
+ 
+.pagination a.active {
+    background-color: #444; /* Slightly darker for the active link */
+    border: 1px solid #666;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #444; /* On hover */
+}
+
+.updates-paragraph-text {
+    color: white;
+    background-color: #a83632;
+    padding: 15px 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.05);
+    margin-bottom: 30px;
+}
+.updates-text-container {
+	margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
 </style>
 </head>
 <body>
