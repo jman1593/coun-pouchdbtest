@@ -254,7 +254,7 @@ const firebaseConfig = {
     window.onload = function() {
     const title = document.getElementById('gameTitle').textContent;
 
-  fetch('https://script.google.com/macros/s/AKfycbzUA0R6BY8C_FE8eyMvW2nVn5X_XWpVgSbHivfvFdDPZCKrLXbROxdLO1tOzd9WYg2iyA/exec?title=' + encodeURIComponent(title), {
+  fetch('https://script.google.com/macros/s/AKfycbwWFyTbHl4mSwaxmvis8WOMk3_jpojGb8CN8KG1EgBHLNuJuNt70v_WWbWP32nCt2Q_aQ/exec?title=' + encodeURIComponent(title), {
     method: 'GET'
   })
   .then(response => response.text())
